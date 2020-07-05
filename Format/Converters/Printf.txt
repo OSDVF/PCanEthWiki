@@ -1,0 +1,208 @@
+<table class="wikitable" style="text-align:center; font-size:85%;">
+
+<tbody><tr>
+<th rowspan="1"> Formátovací<br> řetězec
+</th>
+<th rowspan="1"> Smysl
+</th>
+<th colspan="9"> Datový typ výsledku
+</th></tr>
+<tr>
+<th colspan="2" style="text-align:right;"> Modifikátor délky
+</th>
+<th> <code>hh</code>
+<p>
+</p>
+</th>
+<th> <code>h</code>
+</th>
+<th style="font-weight:normal;"> (none)
+</th>
+<th> <code><b>l</b></code>
+</th>
+<th> <code><b>ll</b></code>
+<p>
+</p>
+</th>
+<th> <code><b>j</b></code>
+<p>
+</p>
+</th>
+<th> <code><b>z</b></code>
+<p>
+</p>
+</th>
+<th> <code><b>t</b></code>
+<p>
+</p>
+</th>
+<th> <code><b>L</b></code>
+</th></tr>
+<tr>
+<th> <code>%</code>
+</th>
+<td style="text-align:left;"> matches literal <code><b>%</b></code>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td></tr>
+<tr>
+<th> <code>c</code>
+</th>
+<td style="text-align:left;">
+<dl><dd> matches a <b>character</b> or a sequence of <b>characters</b>
+</dd></dl>
+<p>If a width specifier is used, matches exactly <i>width</i>  characters (the argument must be a pointer to an array with sufficient room). Unlike&nbsp;%s and&nbsp;%[, does not append the null character to the array.
+</p>
+</td>
+<td rowspan="3" style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td rowspan="3" style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td rowspan="3"> <div class="t-vertical"><div><span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">char</span><span class="sy2">*</span></span></span></div></div>
+</td>
+<td rowspan="3"> <div class="t-vertical"><div><span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">wchar_t</span><span class="sy2">*</span></span></span></div></div>
+</td>
+<td rowspan="3" style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td rowspan="3" style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td rowspan="3" style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td rowspan="3" style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td rowspan="3" style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td></tr>
+<tr>
+<th> <code>s</code>
+</th>
+<td style="text-align:left;">
+<dl><dd> matches a sequence of non-whitespace characters (a <b>string</b>)
+</dd></dl>
+<p>If width specifier is used, matches up to <i>width</i> or until the first whitespace character, whichever appears first. Always stores a null character in addition to the characters matched (so the argument array must have room for at least <i>width+1</i> characters)
+</p>
+</td></tr>
+<tr>
+<th> <code>[</code><span class="t-spar">set</span><code>]</code>
+</th>
+<td style="text-align:left;">
+<dl><dd>matches a non-empty sequence of character from <span class="t-spar">set</span> of characters.
+</dd></dl>
+<p>If the first character of the set is <code>^</code>, then all characters not in the set are matched. If the set begins with <code>]</code> or <code>^]</code> then the <code>]</code> character is also included into the set. It is implementation-defined whether the character <code>-</code> in the non-initial position in the scanset may be indicating a range, as in <code>[0-9]</code>. If width specifier is used, matches only up to <i>width</i>. Always stores a null character in addition to the characters matched (so the argument array must have room for at least <i>width+1</i> characters)
+</p>
+</td></tr>
+<tr>
+<th> <code>d</code>
+</th>
+<td style="text-align:left;">
+<dl><dd>matches a <b>decimal integer</b>.
+</dd></dl>
+<p>The format of the number is the same as expected by <tt>strtol()</tt> with the value <span class="t-c"><span class="mw-geshi c source-c"><span class="nu0">10</span></span></span> for the <code>base</code> argument
+</p>
+</td>
+<td rowspan="6"> <div class="t-vertical"><div><span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">signed</span> <span class="kw4">char</span><span class="sy2">*</span></span></span> or <span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">unsigned</span> <span class="kw4">char</span><span class="sy2">*</span></span></span></div></div>
+</td>
+<td rowspan="6"> <div class="t-vertical"><div><span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">signed</span> <span class="kw4">short</span><span class="sy2">*</span></span></span> or <span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">unsigned</span> <span class="kw4">short</span><span class="sy2">*</span></span></span></div></div>
+</td>
+<td rowspan="6"> <div class="t-vertical"><div><span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">signed</span> <span class="kw4">int</span><span class="sy2">*</span></span></span> or <span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">unsigned</span> <span class="kw4">int</span><span class="sy2">*</span></span></span></div></div>
+</td>
+<td rowspan="6"> <div class="t-vertical"><div><span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">signed</span> <span class="kw4">long</span><span class="sy2">*</span></span></span> or <span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">unsigned</span> <span class="kw4">long</span><span class="sy2">*</span></span></span></div></div>
+</td>
+<td rowspan="6"> <div class="t-vertical"><div><span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">signed</span> <span class="kw4">long</span> <span class="kw4">long</span><span class="sy2">*</span></span></span> or <span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">unsigned</span> <span class="kw4">long</span> <span class="kw4">long</span><span class="sy2">*</span></span></span></div></div>
+</td>
+<td rowspan="6"> <div class="t-vertical"><div><span class="t-c"><span class="mw-geshi c source-c">uintmax_t</span><span class="sy2">*</span></span></span></div></div>
+</td>
+<td rowspan="6"> <div class="t-vertical"><div><span class="t-c"><span class="mw-geshi c source-c">size_t</span><span class="sy2">*</span></span></span></div></div>
+</td>
+<td rowspan="6"> <div class="t-vertical"><div><span class="t-c"><span class="mw-geshi c source-c">ptrdiff_t</span><span class="sy2">*</span></span></span></div></div>
+</td>
+<td rowspan="6" style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td></tr>
+<tr>
+<th> <code>i</code>
+</th>
+<td style="text-align:left;">
+<dl><dd>matches an <b>integer</b>.
+</dd></dl>
+<p>The format of the number is the same as expected by <tt>strtol()</tt> with the value <span class="t-c"><span class="mw-geshi c source-c">​<span class="nu0">0</span>​</span></span> for the <code>base</code> argument (base is determined by the first characters parsed)
+</p>
+</td></tr>
+<tr>
+<th> <code>u</code>
+</th>
+<td style="text-align:left;">
+<dl><dd>matches an unsigned <b>decimal integer</b>. 
+</dd></dl>
+<p>The format of the number is the same as expected by <tt>strtoul()</tt> with the value <span class="t-c"><span class="mw-geshi c source-c"><span class="nu0">10</span></span></span> for the <code>base</code> argument.
+</p>
+</td></tr>
+<tr>
+<th> <code>o</code>
+</th>
+<td style="text-align:left;">
+<dl><dd>matches an unsigned <b>octal integer</b>.
+</dd></dl>
+<p>The format of the number is the same as expected by <tt>strtoul()</tt> with the value <span class="t-c"><span class="mw-geshi c source-c"><span class="nu0">8</span></span></span> for the <code>base</code> argument
+</p>
+</td></tr>
+<tr>
+<th> <code>x</code>, <code>X</code>
+</th>
+<td style="text-align:left;">
+<dl><dd>matches an unsigned <b>hexadecimal integer</b>.
+</dd></dl>
+<p>The format of the number is the same as expected by <tt>strtoul()</tt> with the value <span class="t-c"><span class="mw-geshi c source-c"><span class="nu0">16</span></span></span> for the <code>base</code> argument
+</p>
+</td></tr>
+<tr>
+<th> <code>n</code>
+</th>
+<td style="text-align:left;">
+<dl><dd>returns the <b>number of characters read so far</b>.
+</dd></dl>
+<p>No input is consumed. Does not increment the assignment count. If the specifier has assignment-suppressing operator defined, the behavior is undefined
+</p>
+</td></tr>
+<tr>
+<th> <code>a</code>, <code>A</code><br> <code>e</code>, <code>E</code><br> <code>f</code>, <code>F</code><br> <code>g</code>, <code>G</code>
+</th>
+<td style="text-align:left;">
+<dl><dd>matches a <b>floating-point number</b>.
+</dd></dl>
+<p>The format of the number is the same as expected by <tt>strtof()</tt>
+</p>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td> <div class="t-vertical"><div><span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">float</span><span class="sy2">*</span></span></span></div></div>
+</td>
+<td> <div class="t-vertical"><div><span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">double</span><span class="sy2">*</span></span></span></div></div>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td style="background: #ececec; color: grey; vertical-align: middle; text-align: center;" class="table-na"> <small>N/A</small>
+</td>
+<td> <div class="t-vertical"><div><span class="t-c"><span class="mw-geshi c source-c"><span class="kw4">long</span> <span class="kw4">double</span><span class="sy2">*</span></span></span></div></div>
+</td></tr>
+</tbody></table>
