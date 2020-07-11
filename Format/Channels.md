@@ -5,11 +5,11 @@
     "channels":[
         {
             "name":"can0",
-            "bitrate":"250000"
+            "bitrate":250000
         },
         {
             "name":"can1",
-            "bitrate":"500000"
+            "bitrate":500000
         }
     ]
 }

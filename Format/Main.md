@@ -7,3 +7,5 @@ Převod probíhá pomocí *abstrakce zpráv*.
 - [Vedlejší instrukce pro běh programu](Misc.md)
 - [Definice kanálů](Channels.md)
 - [Routy](Routes.md)
+
+***Upozornění:*** Kvůli aktuání implementaci EthCanRouteru je třeba, aby definice kanálů ideálně předcházely definice rout (toto je automaticky vyřešeno, pokud používáte vizuální editor EthCanConfig).

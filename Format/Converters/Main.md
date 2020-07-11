@@ -71,8 +71,8 @@ Provede logický součin nebo součet nad bity v jednom fragmentu.
         <td><code>op</code> (<tt>string</tt>)</td>
     </tr>
     <tr>
-        <th>Maska</th><td>Číslo, se kterým bude provedena požadovaná operace (v programu EthCanConfig se zadává hexadecimálně, v konf. souboru je uloženo dekadicky)</td>
-        <td><code>mask</code> (<tt>number</tt>)</td>
+        <th>Maska</th><td>Hexadecimální číslo, se kterým bude provedena požadovaná operace</td>
+        <td><code>mask</code> (<tt>string</tt>)</td>
     </tr>
 </table>
 
@@ -120,6 +120,14 @@ Používá se u fragmentů typu `string`. Spojí dva řetězce dohromady a ulož
     <tr>
         <th>Index 2. vst. fragmentu</th><td>Index v seznamu fragmentů 2. vst. jednotky</td>
         <td><code>secondIndex</code> (<tt>number</tt>)</td>
+    </tr>
+    <tr>
+        <th>Název vst. j. pro výstup</th><td>Název vstupní jednotky, do které se uloží výsledný řetězec</td>
+        <td><code>destinationName</code> (<tt>string</tt>)</td>
+    </tr>
+    <tr>
+        <th>Index fragmentu pro výstup</th><td>Index v seznamu fragmentů výstupní. vst. jednotky</td>
+        <td><code>destinationIndex</code> (<tt>number</tt>)</td>
     </tr>
 </table>
 
@@ -192,6 +200,25 @@ Interpretuje data z každého specifikovaného fragmentu jako pole 8-bitových A
     </tr>
 </table>
 
+### Slovníkový překlad (`dictionary`)
+Převede data z číselného formátu na ASCII znaky nebo obráceně.
+#### Parametry
+<table>
+    <thead>
+        <tr>
+            <th>Název parametru</th><th>Význam</th><th>Kódové označení</th>
+        </tr>
+    </thead>
+    <tr>
+        <th>Indexy vst. fragmentů</th><td>Seznam indexů fragmetů, které budou přeloženy. (tento parametr nahrazuje běžný parametr <code>inputIndex</code>)</td>
+        <td><code>inputIndexes</code> (<tt>array[number]</tt>)</td>
+    </tr>
+    <tr>
+        <th>Slovník</th><td>Pole řetězců ve formátu *číslo mezera znak* nebo *znak mezera číslo*, např. "1 Y". Nelze kombinovat oba případy v jednom poli. Jeden slovník umožňuje překlad jen jedním směrem</td>
+        <td><code>dictionary</code> (<tt>array[string]</tt>)</td>
+    </tr>
+</table>
+
 ### Provedení příkazu sed (`sed`)
 Spustí příkaz [sed](https://www.gnu.org/software/sed/manual/sed.html) nad uvedeným fragmentem.
 #### Parametry
@@ -250,9 +277,49 @@ Vypočítá korekční kód uvedených fragmentů pomocí logické funkce XOR. P
 </table>
 
 ## Výstupní jednotky
-Výstupní jednotka má za úkol posbírat fragmenty z jednotlivých vstupních jednotek a poskládat je do nových zpráv, které budou odeslány do CAN nebo Ethernet sítě (podle typu jednotky). Typ jednotky většinou vyberete podle typu [routy](/Format/Routes.md) ve které, aktuální konverter používáte.
+Výstupní jednotka má za úkol posbírat fragmenty z jednotlivých vstupních jednotek a poskládat je do nových zpráv, které budou odeslány do CAN nebo Ethernet sítě (podle typu jednotky). Typ jednotky je vybrán podle typu [routy](/Format/Routes.md) ve které, aktuální konverter používáte.  
+Výstupní jednotky používají stejné *obvyklé parametry* jako jednotky akce.
 
-### Formátovaný výpis
+### Formátovaný výpis do TCP/UDP (`printf`)
+Interpretuje data z každého specifikovaného fragmentu jako pole 8-bitových ASCII znaků a použije funkci `printf` pro výpis do jiného fragmentu.
+#### Parametry
+<table>
+    <thead>
+        <tr>
+            <th>Název parametru</th><th>Význam</th><th>Kódové označení</th>
+        </tr>
+    </thead>
+    <tr>
+        <th>Indexy vst. fragmentů</th><td>Seznam indexů fragmetů, které budou předány funkci <code>printf</code>. (tento parametr nahrazuje běžný parametr <code>inputIndex</code>)</td>
+        <td><code>inputIndexes</code> (<tt>array[number]</tt>)</td>
+    </tr>
+    <tr>
+        <th>Formát</th><td>Formátovací řetězec</td>
+        <td><code>format</code> (<tt>string</tt>)</td>
+    </tr>
+</table>
+
+### Odeslání na CAN (`cansend`)
+#### Parametry
+<table>
+    <thead>
+        <tr>
+            <th>Název parametru</th><th>Význam</th><th>Kódové označení</th>
+        </tr>
+    </thead>
+    <tr>
+        <th>PGN</th><td>Hexadecimální číslo, PGN výstupní CAN zprávy</td>
+        <td><code>pgn</code> (<tt>string</tt>)</td>
+    </tr>
+    <tr>
+        <th>Index prvního bitu</th><td></td>
+        <td><code>firstBitIndex</code> (<tt>number</tt>)</td>
+    </tr>
+    <tr>
+        <th>Datový typ</th><td>Datový typ výstupu (ovlivní celkový počet bitů). Pokud je zadán <tt>char</tt>, vstupní znak bude převeden na ASCII kód.</td>
+        <td><code>dataType</code> (<tt>uchar | uint4 | int4 | uint8 | int8 | uint16 | int16 | uint32 | int32 | str</tt>)</td>
+    </tr>
+</table>
 
 
 ## Formát scanf a printf

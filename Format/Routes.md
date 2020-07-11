@@ -12,14 +12,14 @@ Vlastnosti:
         {
             "name":"firstRoute",
             "type":"canout",
-            "ethListeners":[
+            "listeners":[
                 ...
             ]
         },
         {
             "name":"secondRoute",
             "type":"canin",
-            "canListeners":[
+            "listeners":[
                 ...
             ]
         },
@@ -30,7 +30,7 @@ Vlastnosti:
 Listener je jednotka, která naslouchá na určitém kanále na určitý typ zprávy, a pokud přijde, přepošle ji dál.
 
 ### Ethernet -> CAN Listenery
-(`ethListeners`)  
+(`listeners`)  
 Je potřeba specifikovat:
 - **port**, na kterém bude naslouchat
 - **protokol**, který bude pro naslouchání použit *(TCP/UDP)*
@@ -50,12 +50,12 @@ Dobrovolné vlastnosti
         {
             "name":"firstRoute",
             "type":"canout",
-            "ethListeners":[
+            "listeners":[
                 {
                     "port":"1234",
                     "protocol":"udp",
-                    "startsWith":"$PMACI",
-                    "endsWith":"/\*[0-9A-z]\r\n/",
+                    "startsWith":"$PMACO",
+                    "endsWith":"/\\*[0-9a-fA-F]+\r\n/",
                     "includeBorders":true,
                     "filter":"/^[a-Z],(.*)$/",
                     "converters":[
@@ -69,7 +69,7 @@ Dobrovolné vlastnosti
 ```
 
 ### CAN -> Ethernet Listenery
-(`canListeners`)  
+(`listeners`)  
 Je třeba specifikovat:
 - **Kanál**, který bude použit pro naslouchání
 - **Konverter** - viz dále
@@ -85,7 +85,7 @@ Maska určuje, které bity filtru budou použity při filtrování. Filtr bude s
         {
             "name":"secondRoute",
             "type":"canin",
-            "canListeners":[
+            "listeners":[
                 {
                     "channel":"can0",
                     "filter":"",
