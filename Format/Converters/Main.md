@@ -15,7 +15,7 @@ Vstupní jednotky konverteru můžou být těchto typů:
 - regex - extrahuje z textu části odpovídající zachytávacím skupinám (capture groups) z regulárního výrazu ([pro testování použijte třeba regex101](https://regex101.com/))
 - bits - vybere z přijaté zprávy určité skupiny bitů a uspořádá je podle potřeby. Každá skupina bitů (fragment) je brána jako jedno číslo.
     - Pořadí bajtů - endianita = Big Endian/Little Endian (`byteOrder`)
-    - Pořadí bitů v jednom bajtu - specifikuje, který bit je přečten jako "nultý" (`bitOrder`)
+    - Pořadí bitů v jednom bajtu - specifikuje, který bit je přečten jako "nultý" (LSB -> nultý bude bit nejvíce vpravo) (`bitOrder`)
 
 Navíc můžete u každého typu vst. jednotky zadat vlastní pořadí, podle kterého se přeskládají různé extrahované podčásti zprávy. (Vlastnost `shuffle`, pro přeskládání přesně v opačném pořadí zadejte její hodnotu `Inf`)
 
@@ -29,6 +29,7 @@ Vst. jednotky produkují:
 - separator - u každého fragmentu je proveden pokus o převedení na `int`, a pokud selže, fragment bude typu `string`.
 - regex - stejně jako u **separator**
 - bits - u každé skupiny bitů je specifikováno, jestli se mají interpretovat jako `int`, nebo `uint`. (V konfiguračním souboru je pro použití `uint` uvedeno u každého rozmezí bitů písmeno `u`)
+> Poznámka: u jednotky může být uvedena maximální velikost jednoho `string` fragmentu. Pokud není uvedena, je použita výchozí hodnota 256.
 
 ## Akce
 Akční jednotky umožňují provádět různé operace nad daty extrahovanými ze zprávy. Jedna extrahovaná část = `fragment`. Výsledky operací jsou opět uloženy do seznamů fragmentů v jednotlivých vst. jednotkách. Pokud index fragmentu, specifikovaný jako výstupní, neexistuje, je vytvořen (jsou použity dynamické seznamy).  
@@ -278,7 +279,7 @@ Vypočítá korekční kód uvedených fragmentů pomocí logické funkce XOR. P
 
 ## Výstupní jednotky
 Výstupní jednotka má za úkol posbírat fragmenty z jednotlivých vstupních jednotek a poskládat je do nových zpráv, které budou odeslány do CAN nebo Ethernet sítě (podle typu jednotky). Typ jednotky je vybrán podle typu [routy](/Format/Routes.md) ve které, aktuální konverter používáte.  
-Výstupní jednotky používají stejné *obvyklé parametry* jako jednotky akce.
+>Výstupní jednotky používají stejné *obvyklé parametry* jako jednotky akce.
 
 ### Formátovaný výpis do TCP/UDP (`printf`)
 Interpretuje data z každého specifikovaného fragmentu jako pole 8-bitových ASCII znaků a použije funkci `printf` pro výpis do jiného fragmentu.
@@ -321,8 +322,30 @@ Interpretuje data z každého specifikovaného fragmentu jako pole 8-bitových A
     </tr>
 </table>
 
+## 🧺 Globální úložistě
+Někdy je potřeba uložit výstup z vícero zpráv (vícero *rout*) na jedno místo, a počkat na správnou chvíli, kdy ho bude možné odeslat. V takovém případě je možné použít v parametrech jakékoliv akční jednotky název "global názevúložiště" a tak nebude výstup ukládán do vst. jednotky ale do globálního úložiště s názvem `názevúložiště`.  
+Aby bylo možné počkat na správnou chvíli a pak odeslat "celou zprávu", můžete u některé `Výstpní jednotky` použít parametr `waitfor`, který vám dovolí čekat na zápis vlajky, které můžou akční nebo vstupní jednotky zapisovat pomocí parametru `setflag`.
+
+Filozofie vlajek je odvozena od bitového maskování (každá vlajka je jiná mocnina dvojky). Pokud tedy chcete získat data ze tří rout, v jedné může některá jednotka nastavit vlajku `1`, v druhé `2` a ve třetí `4`. V parametru `waitfor` pak bude třeba čekat na číslo `7` (1+2+4).
+<table>
+    <thead>
+        <tr>
+            <th>Název parametru</th><th>Význam</th><th>Kódové označení</th>
+        </tr>
+    </thead>
+    <tr>
+        <th>Vztyč vlajku</th><td>Číslo vlajky, mocnina dvojky</td>
+        <td><code>setflag</code> (<tt>number</tt>)</td>
+    </tr>
+    <tr>
+        <th>Čekej na vlajky</th><td>Součet hodnot vlajek, ne které chcete čekat</td>
+        <td><code>waitfor</code> (<tt>number</tt>)</td>
+    </tr>
+</table>
+
 
 ## Formát scanf a printf
 Použijte wikipedii
 - [printf - CZ](https://cs.wikipedia.org/wiki/Printf#Form%C3%A1tovac%C3%AD_%C5%99et%C4%9Bzec)
 - [scanf - EN](https://en.wikipedia.org/wiki/Scanf_format_string#Format_string_specifications)
+> POZOR! Funkce scanf nedokáže rozpoznat jiné oddělovače následující za `řetězcem`, než mezeru. např. `%s, %d` se nebude chovat podle očekávání. Použijte raději jednotky typu `separator` nebo `regex`.

@@ -4,7 +4,8 @@ TODO: toto je jen příklad který posloužil pro přemýšlení při tvoření 
 "converters":{
     "input":[
         {
-            "name":"myPlainParser"
+            "name":"myPlainParser",
+            "buffer":256
         },
         {
             "name":"myFormatParser",
