@@ -1,5 +1,5 @@
 # Routy
-Routa je komplexní definice, jak převádět a přeposílaat určitá data, která přijdou do převodníku.
+Routa je komplexní nastavení, jak převádět a přeposílat určitá data, která přijdou do převodníku.
 Vlastnosti:
 - Jméno
 - Typ - směr přeposílání
@@ -31,7 +31,7 @@ Vlastnosti:
 ```
 
 ## Listenery
-Listener je jednotka, která naslouchá na určitém kanále na určitý typ zprávy, a pokud přijde, přepošle ji dál.
+Listener je jednotka, která naslouchá na určitém kanále na určitý typ zprávy, a pokud přijde, přepošle ji do *konverterů*.
 
 ### Ethernet -> CAN Listenery
 (`listeners`)  

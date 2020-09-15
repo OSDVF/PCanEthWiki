@@ -1,7 +1,7 @@
 # EthCanConfig
 ![Screenshot](screenshot.png)  
 ## Stáhnutí
-Tento program by měl být spustitelný na Windows a Linuxu
+Tento program by měl být spustitelný na Windows a Linuxu  
 TODO: Link na stažení
 
 ## Funkce

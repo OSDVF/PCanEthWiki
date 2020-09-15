@@ -5,7 +5,7 @@ Konvertery specifikují, jak vstupní řetězec rozdělit, jaké operace s těmi
 Konvertery obsahují vstupní, akční a výstupní jednotky.
 
 ## Vstupní jednotka
-U každé z nich specifikujte, jak zacházet se syrovým vstupem z CAN kanálu/Internetového protokolu. Typicky rozděluje souvislou zprávu na *více podčástí* = seznam fragmentů. Můžete použít více vstupních jednotek konverteru, v tom případě je nutné je pojmenovat. (`name`)  
+U každé z nich specifikujte, jak zacházet se syrovým vstupem z CAN kanálu nebo Internetového protokolu. Typicky rozděluje souvislou zprávu na *více podčástí* = seznam fragmentů. Můžete použít více vstupních jednotek konverteru, v tom případě je nutné je pojmenovat. (`name`)  
 Vstupní jednotky konverteru můžou být těchto typů:
 - Prostá - nerozděluje zprávu, seznam bude obsahovat jen jeden *fragment*
 - scanf - interpretuje data jako ASCII text a rozdělí jej pomocí formátovcího řetězce, který je typický pro funkci `scanf` jazyka C.
@@ -24,7 +24,7 @@ Rozlišují se datové typy `string` (řetězec), `int` (32-bit znaménkové č�
 Vst. jednotky produkují:
 - Prostá - celá zpráva je `string`
 - scanf - fragmenty obdrží datové typy specifikované formátovacím řetězcem
-- separator - u každého fragmentu je proveden pokus o převedení na `int`, a pokud selže, fragment bude typu `string`.
+- separator - každý fragment je typu `string`
 - regex - stejně jako u **separator**
 - bits - u každé skupiny bitů je specifikováno, jestli se mají interpretovat jako `int`, nebo `uint`. (V konfiguračním souboru je pro použití `uint` uvedeno u každého rozmezí bitů písmeno `u`)
 > Poznámka: u jednotky může být uvedena maximální velikost jednoho `string` fragmentu. Pokud není uvedena, je použita výchozí hodnota 256.
@@ -129,7 +129,7 @@ Používá se u fragmentů typu `string`. Spojí dva řetězce dohromady a ulož
         <td><code>destinationIndex</code> (<tt>number</tt>)</td>
     </tr>
 </table>
-
+<!--
 ### Seřazení fragmentů (`shuffle`)
 Zpřehází aktuální seznam fragmentů jedné vstupní jednotky.
 #### Parametry
@@ -144,7 +144,8 @@ Zpřehází aktuální seznam fragmentů jedné vstupní jednotky.
         <td><code>shuffle</code> (<tt>array[number]</tt>)</td>
     </tr>
 </table>
-
+-->
+<!--
 ### Záměna fragmentů (`swap`)
 Zamění jeden fragment jedné vst. jednotky za jiný fragment jiné vst. jednotky. (popř. stejné vst. jednotky).
 #### Parametry
@@ -171,6 +172,7 @@ Zamění jeden fragment jedné vst. jednotky za jiný fragment jiné vst. jednot
         <td><code>secondIndex</code> (<tt>number</tt>)</td>
     </tr>
 </table>
+-->
 
 ### Formátovaný výpis (`printf`)
 Interpretuje data z každého specifikovaného fragmentu jako pole 8-bitových ASCII znaků a použije funkci `printf` pro výpis do jiného fragmentu.
@@ -218,6 +220,7 @@ Převede data z číselného formátu na ASCII znaky nebo obráceně. Výstupní
     </tr>
 </table>
 
+<!--
 ### Provedení příkazu sed (`sed`)
 Spustí příkaz [sed](https://www.gnu.org/software/sed/manual/sed.html) nad uvedeným fragmentem.
 #### Parametry
@@ -232,7 +235,8 @@ Spustí příkaz [sed](https://www.gnu.org/software/sed/manual/sed.html) nad uve
         <td><code>arguments</code> (<tt>string</tt>)</td>
     </tr>
 </table>
-
+-->
+<!--
 ### Regulární výraz (`regex`)
 Spustí regulární výraz nad uvedeným fragmentem, který interpretuje jako pole 8-bitových ASCII znaků. Každá celá jedna z výsledných odpovídajících "zachytávacích skupin" (capture groups) je uložena do fragmentu na příslušném indexu (podle jedné z hodnot parametru `destinationIndexes`) do seznamu fragmentů specifikované cílové vstupní jednotky.
 #### Parametry
@@ -255,7 +259,7 @@ Spustí regulární výraz nad uvedeným fragmentem, který interpretuje jako po
         <td><code>destinationIndexes</code> (<tt>array[number]</tt>)</td>
     </tr>
 </table>
-
+-->
 ### Korekční kód NMEA (`nmeacc`)
 Vypočítá korekční kód uvedených fragmentů pomocí logické funkce XOR. Pokud *obvyklý parametr* "Index zdroje" není zadán, funkce je spuštěna na celém seznamu fragmentů vybrané vstupní jednotky.
 #### Parametry
@@ -276,8 +280,8 @@ Vypočítá korekční kód uvedených fragmentů pomocí logické funkce XOR. P
 </table>
 
 ## Výstupní jednotky
-Výstupní jednotka má za úkol posbírat fragmenty z jednotlivých vstupních jednotek a poskládat je do nových zpráv, které budou odeslány do CAN nebo Ethernet sítě (podle typu jednotky). Typ jednotky je vybrán podle typu [routy](/Format/Routes.md) ve které, aktuální konverter používáte.  
->Výstupní jednotky používají stejné *obvyklé parametry* jako jednotky akce.
+Výstupní jednotka má za úkol posbírat fragmenty z jedné vstupní jednotky (nebo [globálního úložiště](/Format/Globals.md)) a poskládat je do nových zpráv, které budou odeslány do CAN nebo Ethernet sítě (podle typu jednotky).
+> Výstupní jednotky také mohou a nemusí mít parametr "Název zdroje", tak jako akční jednotky.
 
 ### Formátovaný výpis do TCP/UDP (`printf`)
 Interpretuje data z každého specifikovaného fragmentu jako pole 8-bitových ASCII znaků a použije funkci `printf` pro výpis do jiného fragmentu.
@@ -289,7 +293,7 @@ Interpretuje data z každého specifikovaného fragmentu jako pole 8-bitových A
         </tr>
     </thead>
     <tr>
-        <th>Indexy vst. fragmentů</th><td>Seznam indexů fragmetů, které budou předány funkci <code>printf</code>. (tento parametr nahrazuje běžný parametr <code>inputIndex</code>)</td>
+        <th>Indexy vst. fragmentů</th><td>Seznam indexů fragmetů, které budou předány funkci <code>printf</code>.</td>
         <td><code>inputIndexes</code> (<tt>array[number]</tt>)</td>
     </tr>
     <tr>
@@ -308,20 +312,24 @@ Pozor! Prozatím je možno odesílat data jen ve formátu bigEndian. Bity jsou p
         </tr>
     </thead>
     <tr>
+        <th>Indexy vst. fragmentů</th><td>Seznam indexů fragmetů, které budou do této zprávy poskládány.</td>
+        <td><code>inputIndexes</code> (<tt>array[number]</tt>)</td>
+    </tr>
+    <tr>
         <th>PGN</th><td>Hexadecimální číslo, PGN výstupní CAN zprávy</td>
         <td><code>pgn</code> (<tt>string</tt>)</td>
     </tr>
     <tr>
-        <th>Index prvního bitu</th><td>Pozor! Prozatím je možno použít jen indexy zarovnané na bajty (násobky osmi)</td>
-        <td><code>firstBitIndex</code> (<tt>number</tt>)</td>
+        <th>Indexy prvního bitu</th><td>Číslo bitu v CAN zprávě, na kterém začne zápis příslušného fragmentu z <code>inputIndexes</code>. Pozor! Prozatím je možno použít jen indexy zarovnané na bajty (násobky osmi)</td>
+        <td><code>firstBitIndexes</code> (<tt>array[number]</tt>)</td>
     </tr>
     <tr>
-        <th>Datový typ</th><td>Datový typ výstupu (ovlivní celkový počet bitů). <code>char</code> má stejný efekt jako <code>uint8</code></td>
-        <td><code>dataType</code> (<tt>uchar | uint4 | int4 | uint8 | int8 | uint16 | int16 | uint32 | int32 | str</tt>)</td>
+        <th>Datovýe typy</th><td>Datový typ každého z fragmentů, které jsou specifikovány v <code>inputIndexes</code>. Ovlivní to celkový počet bitů, které se do zprávy z fragmentu zapíšou. <code>char</code> má stejný efekt jako <code>uint8</code></td>
+        <td><code>dataTypes</code> (<tt>array[ uchar | uint4 | int4 | uint8 | int8 | uint16 | int16 | uint32 | int32 | str ]</tt>)</td>
     </tr>
 </table>
 
-## [Globální úložiště](/Format/Globals.md)
+### [O globálním úložišti](/Format/Globals.md)
 
 ## Formát scanf a printf
 Použijte wikipedii
