@@ -5,8 +5,6 @@ Konvertery specifikují, jak vstupní řetězec rozdělit, jaké operace s těmi
 Konvertery obsahují vstupní, akční a výstupní jednotky.
 
 ## Vstupní jednotka
-TODO: tohle platí jen pro Ethernet->CAN
-
 U každé z nich specifikujte, jak zacházet se syrovým vstupem z CAN kanálu/Internetového protokolu. Typicky rozděluje souvislou zprávu na *více podčástí* = seznam fragmentů. Můžete použít více vstupních jednotek konverteru, v tom případě je nutné je pojmenovat. (`name`)  
 Vstupní jednotky konverteru můžou být těchto typů:
 - Prostá - nerozděluje zprávu, seznam bude obsahovat jen jeden *fragment*
@@ -17,11 +15,11 @@ Vstupní jednotky konverteru můžou být těchto typů:
     - Pořadí bajtů - endianita = Big Endian/Little Endian (`byteOrder`)
     - Pořadí bitů v jednom bajtu - specifikuje, který bit je přečten jako "nultý" (LSB -> nultý bude bit nejvíce vpravo) (`bitOrder`)
 
-Navíc můžete u každého typu vst. jednotky zadat vlastní pořadí, podle kterého se přeskládají různé extrahované podčásti zprávy. (Vlastnost `shuffle`, pro přeskládání přesně v opačném pořadí zadejte její hodnotu `Inf`)
+Navíc můžete u každého typu vst. jednotky zadat vlastní pořadí, podle kterého se přeskládají různé extrahované podčásti zprávy. (Vlastnost `shuffle`, pro přeskládání přesně v opačném pořadí zadejte její hodnotu `[-1]`)
 
 ### Datové typy fragmentů
 Datové typy fragmentů se mohou lišit podle použitého typu vstupní jednotky, která jej vyprodukovala.
-Rozlišují se datové typy `string` (řetězec), `int` (znaménkové číslo) a `uint` (bezznaménkové číslo).
+Rozlišují se datové typy `string` (řetězec), `int` (32-bit znaménkové číslo) a `uint` (bezznaménkové číslo).
 
 Vst. jednotky produkují:
 - Prostá - celá zpráva je `string`
@@ -202,7 +200,7 @@ Interpretuje data z každého specifikovaného fragmentu jako pole 8-bitových A
 </table>
 
 ### Slovníkový překlad (`dictionary`)
-Převede data z číselného formátu na ASCII znaky nebo obráceně.
+Převede data z číselného formátu na ASCII znaky nebo obráceně. Výstupní fragmentu bude vždy typu `string`.
 #### Parametry
 <table>
     <thead>
@@ -301,6 +299,7 @@ Interpretuje data z každého specifikovaného fragmentu jako pole 8-bitových A
 </table>
 
 ### Odeslání na CAN (`cansend`)
+Pozor! Prozatím je možno odesílat data jen ve formátu bigEndian. Bity jsou pak číslovány od 0 vlevo (první odeslaný bit zprávy je bit 0).
 #### Parametry
 <table>
     <thead>
@@ -313,36 +312,16 @@ Interpretuje data z každého specifikovaného fragmentu jako pole 8-bitových A
         <td><code>pgn</code> (<tt>string</tt>)</td>
     </tr>
     <tr>
-        <th>Index prvního bitu</th><td></td>
+        <th>Index prvního bitu</th><td>Pozor! Prozatím je možno použít jen indexy zarovnané na bajty (násobky osmi)</td>
         <td><code>firstBitIndex</code> (<tt>number</tt>)</td>
     </tr>
     <tr>
-        <th>Datový typ</th><td>Datový typ výstupu (ovlivní celkový počet bitů). Pokud je zadán <tt>char</tt>, vstupní znak bude převeden na ASCII kód.</td>
+        <th>Datový typ</th><td>Datový typ výstupu (ovlivní celkový počet bitů). <code>char</code> má stejný efekt jako <code>uint8</code></td>
         <td><code>dataType</code> (<tt>uchar | uint4 | int4 | uint8 | int8 | uint16 | int16 | uint32 | int32 | str</tt>)</td>
     </tr>
 </table>
 
-## 🧺 Globální úložistě
-Někdy je potřeba uložit výstup z vícero zpráv (vícero *rout*) na jedno místo, a počkat na správnou chvíli, kdy ho bude možné odeslat. V takovém případě je možné použít v parametrech jakékoliv akční jednotky název "global názevúložiště" a tak nebude výstup ukládán do vst. jednotky ale do globálního úložiště s názvem `názevúložiště`.  
-Aby bylo možné počkat na správnou chvíli a pak odeslat "celou zprávu", můžete u některé `Výstpní jednotky` použít parametr `waitfor`, který vám dovolí čekat na zápis vlajky, které můžou akční nebo vstupní jednotky zapisovat pomocí parametru `setflag`.
-
-Filozofie vlajek je odvozena od bitového maskování (každá vlajka je jiná mocnina dvojky). Pokud tedy chcete získat data ze tří rout, v jedné může některá jednotka nastavit vlajku `1`, v druhé `2` a ve třetí `4`. V parametru `waitfor` pak bude třeba čekat na číslo `7` (1+2+4).
-<table>
-    <thead>
-        <tr>
-            <th>Název parametru</th><th>Význam</th><th>Kódové označení</th>
-        </tr>
-    </thead>
-    <tr>
-        <th>Vztyč vlajku</th><td>Číslo vlajky, mocnina dvojky</td>
-        <td><code>setflag</code> (<tt>number</tt>)</td>
-    </tr>
-    <tr>
-        <th>Čekej na vlajky</th><td>Součet hodnot vlajek, ne které chcete čekat</td>
-        <td><code>waitfor</code> (<tt>number</tt>)</td>
-    </tr>
-</table>
-
+## [Globální úložiště](/Format/Globals.md)
 
 ## Formát scanf a printf
 Použijte wikipedii
