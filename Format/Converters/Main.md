@@ -40,7 +40,7 @@ Tyto paramtery se objevují u většiny akčních jednotek.
         </tr>
     </thead>
     <tr>
-        <th>Název zdroje</th><td>Název vstupní jednotky, ze které se data berou. Pokud je použita je jedna, nepojmenovaná, tak je tento parametr nepotřebný.</td>
+        <th>Název zdroje</th><td>Název vstupní jednotky, ze které se data berou. Není nutný, pokud je v listeneru použita je jedna = bezejmenná, pak je tento parametr nepotřebný.</td>
         <td><code>inputName</code> (<tt>string</tt>)</td>
     </tr>
     <tr>
@@ -260,6 +260,63 @@ Spustí regulární výraz nad uvedeným fragmentem, který interpretuje jako po
     </tr>
 </table>
 -->
+### Kontrola existence (`exists`)
+Zkontroluje, jestli délka určitého fragmentu typu `string` je nulová. Pokud ne, vztyčí požadovanou vlajku.
+#### Parametry
+<table>
+    <thead>
+        <tr>
+            <th>Název parametru</th><th>Význam</th><th>Kódové označení</th>
+        </tr>
+    </thead>
+    <tr>
+        <th>Zdrojová vst. jednotka</th><td>Název jednotky, ze které se čte fragment a na které se vztyčí vlajka. Pokud je prázdný, použije se bezejmenná jednotka.</td>
+        <td><code>inputName</code> (<tt>string</tt>)</td>
+    </tr>
+    <tr>
+        <th>Index čteného fragmentu</th><td></td>
+        <td><code>inputIndex</code> (<tt>number</tt>)</td>
+    </tr>
+    <tr>
+        <th>Vlajka</th><td>Číslo vlajky, mocnina dvojky, viz [Systém vlajek](/Format/Globals.md)</td>
+        <td><code>setFlags</code> (<tt>number</tt>)</td>
+    </tr>
+</table>
+
+### Převod stringu na číslo (`parsenum`)
+Převede jeden a více fragmentů typu `string` na typ `int` nebo `uint` podle specifikovaného formátu. Formát může být `%u`,`%d`,`%x`, nebo jedna ze speciálních možností:  
+- `bX` - Převede X bytový hexadecimální řetězec (=> který má X×2 znaků) na 1 až N/4 fragmentů typu `uint`. Používá se při převodu hexadecimálních čísel delších, než 4 byty. (např. b5 pro přečtení 10 hexadecimálních číslic do 2 fragmentů typu uint)
+- `%rx` - Převede hexadecimální řetězec, ale čte byty v opačném pořadí. Používá se při konverzi endianity. (reverse hex)
+
+#### Parametry
+<table>
+    <thead>
+        <tr>
+            <th>Název parametru</th><th>Význam</th><th>Kódové označení</th>
+        </tr>
+    </thead>
+    <tr>
+        <th>Formát</th><td>Formátovací řetězec - %u, %d, %rx nebo bX</td>
+        <td><code>format</code> (<tt>string</tt>)</td>
+    </tr>
+    <tr>
+        <th>Zdrojová vst. jednotka</th><td>Název jednotky, ze které se čtou stringové fragmenty. Pokud je prázdný, použije se bezejmenná jednotka.</td>
+        <td><code>inputName</code> (<tt>string</tt>)</td>
+    </tr>
+    <tr>
+        <th>Cílová vst. jednotka</th><td>Název jednotky, do které se zapisují číselné fragment. Pokud je prázdný, použije se bezejmenná jednotka.</td>
+        <td><code>destinationName</code> (<tt>string</tt>)</td>
+    </tr>
+    <tr>
+        <th>Indexy čtených fragmentů</th><td>Index na první pozici zde odpovídá prvnímu indexu v destinationIndexes atd.</td>
+        <td><code>inputIndexes</code> (<tt>array[number]</tt>)</td>
+    </tr>
+    <tr>
+        <th>Indexy zapisovaných fragmentů</th><td>Na fragment, který je zde jmenován jako první bude zapsán fragmentu, který je jmenován jako první v `inputIndexes` atd.</td>
+        <td><code>destinationIndexes</code> (<tt>array[number]</tt>)</td>
+    </tr>
+</table>
+
 ### Korekční kód NMEA (`nmeacc`)
 Vypočítá korekční kód uvedených fragmentů pomocí logické funkce XOR. Pokud *obvyklý parametr* "Index zdroje" není zadán, funkce je spuštěna na celém seznamu fragmentů vybrané vstupní jednotky.
 #### Parametry
